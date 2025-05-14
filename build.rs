@@ -10,7 +10,9 @@ fn main() {
     let out_dir = cmake.build_target("all").build();
     println!("cargo:rustc-link-search=native={}/build", out_dir.display());
     println!("cargo:rustc-link-lib=static=libsais");
-    println!("cargo:rustc-link-lib=gomp");
+    if cfg!(feature = "openmp") {
+        println!("cargo:rustc-link-lib=gomp");
+    }
 
     let mut bindgen = bindgen::Builder::default()
         .header("libsais/include/libsais.h")
